@@ -1,4 +1,6 @@
 import fs from 'node:fs'
+import path from 'node:path'
+import url from 'node:url'
 
 import { downloadFile as ipullDownloadFile } from 'ipull'
 
@@ -66,5 +68,23 @@ export class FileHelper {
     }
 
     await fs.promises.writeFile(manifestPath, JSON.stringify(manifest, null, 2))
+  }
+
+  /**
+   * Dynamically imports a module or JSON file using a file path,
+   * ensuring cross-platform compatibility for native ESM imports
+   * @param filePath
+   * @param options
+   * @example dynamicImportFromFile('path/to/module.js')
+   */
+  public static async dynamicImportFromFile(
+    filePath: string,
+    options?: ImportCallOptions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
+    const absolutePath = path.resolve(filePath)
+    const fileURL = url.pathToFileURL(absolutePath).href
+
+    return import(fileURL, options)
   }
 }
