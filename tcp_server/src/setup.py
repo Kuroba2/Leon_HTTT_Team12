@@ -72,7 +72,7 @@ if 'macos' not in sysconfig.get_platform():
 
 executables = [
     Executable(
-        script='tcp_server/src/main.py',
+        script=os.path.join('tcp_server', 'src', 'main.py'),
         target_name='leon-tcp-server'
     )
 ]
